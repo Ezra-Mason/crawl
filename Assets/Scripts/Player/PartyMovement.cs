@@ -9,6 +9,7 @@ public class PartyMovement : MonoBehaviour
     [SerializeField] private float _turnSpeed;
     [SerializeField] private float _unitSpacing = 1f;
     [SerializeField] private List<GameObject> _units = new List<GameObject>();
+    [SerializeField] private GameObjectRuntimeCollection _currentUnitCollection;
 
     private Vector2 _input;
     private Vector2 _oldInput;
@@ -34,6 +35,7 @@ public class PartyMovement : MonoBehaviour
         {
             GameObject leader = Instantiate(_units[0], transform.position, transform.rotation, transform);
             _currentUnits.Add(leader);
+            _currentUnitCollection.Add(leader);
             _leader = leader;
             _leaderRB =_leader.GetComponent<Rigidbody>();
             _units.RemoveAt(0);
@@ -44,19 +46,21 @@ public class PartyMovement : MonoBehaviour
         {
             posHist.ResetList();
         }
-        _countUp += Time.deltaTime;
+        _countUp += Time.fixedDeltaTime;
         _counter++;
         if (_countUp >=_unitSpacing)
         {
+            Debug.Log("CountUP =" + _countUp);
             _unitPoses.Add(posHist);
             GameObject instance = Instantiate(_units[0], posHist.History[0].Position, posHist.History[0].Rotation, transform);
             _currentUnits.Add(instance);
+            _currentUnitCollection.Add(instance);
             _units.RemoveAt(0);
             instance.GetComponent<PoseHistory>().ResetList();
             _countUp = 0f;
             _counter = 0;
         }
-        Debug.Log("counter =" + _counter);
+        //Debug.Log("counter =" + _counter);
     }
 
     
@@ -76,7 +80,7 @@ public class PartyMovement : MonoBehaviour
         }
         MoveParty();
 
-        Debug.Log("poselen = " + _unitPoses[0].History.Count);
+        //Debug.Log("poselen = " + _unitPoses[0].History.Count);
     }
 
 
