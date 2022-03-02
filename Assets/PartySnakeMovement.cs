@@ -16,6 +16,8 @@ public class PartySnakeMovement : MonoBehaviour
     [SerializeField] private int _space = 100;
     [SerializeField] private List<GameObject> _party = new List<GameObject>();
     [SerializeField] private List<GameObject> _currentParty = new List<GameObject>();
+    [SerializeField] private GameObjectRuntimeCollection _currentUnitCollection;
+
     private GameObject _leader;
     private Rigidbody _leaderRB;
     private bool _doneSetUp = false;
@@ -34,11 +36,13 @@ public class PartySnakeMovement : MonoBehaviour
         //numer of positions between each unit is (0.02f*_moveSpeed)/_unitSpacing
         //_dx  = _unitSpacing/ (0.02f * _moveSpeed);
         //_pointsPerUnitSpace = Mathf.RoundToInt(_dx);
+        _currentUnitCollection.Clear();
         _poseHistory = new List<Pose>();
         for (int i = 0; i < _party.Count; i++)
         {
             GameObject instance = Instantiate(_party[i], transform.position , Quaternion.identity, transform);
             _currentParty.Add(instance);
+            _currentUnitCollection.Add(instance);
         }
 
         _leader = _currentParty[0];

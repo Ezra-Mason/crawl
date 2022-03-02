@@ -52,6 +52,7 @@ public class PlayerUnit : MonoBehaviour
         if (instance.TryGetComponent<Rigidbody>(out Rigidbody rb))
         {
             Vector3 direction = (point - transform.position).normalized;
+            direction.y = 0f;
             rb.AddForce(direction * _shootForce);
         }
         //Invoke("instnace.Destroy",_killTime);
